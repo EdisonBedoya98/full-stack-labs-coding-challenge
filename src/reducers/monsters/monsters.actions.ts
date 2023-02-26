@@ -6,7 +6,14 @@ export const fetchMonstersData = createAsyncThunk<Monster[]>(
   'monsters/fetchMonstersData',
   MonsterService.getAll,
 );
+export const startBattleRequest = createAsyncThunk<Monster[]>(
+  'monsters/startBattleRequest',
+  MonsterService.getAll,
+);
 
 export const setSelectedMonster = createAction<Monster | null>(
   'monsters/setSelectedMonster',
+);
+export const setSelectedMachineMonster = createAction<Monster | null>(
+  'monsters/setSelectedMachineMonster',
 );

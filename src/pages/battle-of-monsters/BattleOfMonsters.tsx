@@ -1,40 +1,43 @@
-import { useEffect } from "react"
-import { useSelector } from "react-redux"
-import { useAppDispatch } from "../../app/hooks"
-import { MonsterBattleCard } from "../../components/monster-battle-card/MonsterBattleCard"
-import { MonstersList } from "../../components/monsters-list/MonstersList"
-import { Title } from "../../components/title/Title"
-import { fetchMonstersData } from "../../reducers/monsters/monsters.actions"
-import { selectMonsters, selectSelectedMonster } from "../../reducers/monsters/monsters.selectors"
-import { BattleSection, PageContainer, StartBattleButton } from "./BattleOfMonsters.styled"
+import { Title } from '../../components/title/Title';
+import {
+  BattleSection,
+  PageContainer,
+  StartBattleButton,
+} from './BattleOfMonsters.styled';
+import { WinnerDisplay } from '../../components/winner-display/WinnerDisplay';
+import { useMonster } from '../../components/hooks/useMonster';
+import { MonstersList } from '../../components/monsters-list/MonstersList';
+import { MonsterBattleCard } from '../../components/monster-battle-card/MonsterBattleCard';
 
 const BattleOfMonsters = () => {
-    const dispatch = useAppDispatch()
+  const { monsters, selectedMonster, selectedMachineMonster } = useMonster();
 
-    const monsters = useSelector(selectMonsters)
-    const selectedMonster = useSelector(selectSelectedMonster)
+  const handleStartBattleClick = () => {
+    // Fight!
+  };
 
-    useEffect(() => {
-        dispatch(fetchMonstersData())
-    }, []);
+  return (
+    <PageContainer>
+      <Title>Battle of Monsters</Title>
 
-    const handleStartBattleClick = () => {
-        // Fight!
-    }
+      <MonstersList monsters={monsters} />
+      <WinnerDisplay text="Dead unicorn" />
+      <BattleSection>
+        <MonsterBattleCard
+          title={selectedMonster?.name || 'Player'}
+          monster={selectedMonster}></MonsterBattleCard>
+        <StartBattleButton
+          data-testid="start-battle-button"
+          disabled={selectedMonster === null}
+          onClick={handleStartBattleClick}>
+          Start Battle
+        </StartBattleButton>
+        <MonsterBattleCard
+          title="Computer"
+          monster={selectedMachineMonster}></MonsterBattleCard>
+      </BattleSection>
+    </PageContainer>
+  );
+};
 
-    return (
-        <PageContainer>
-            <Title>Battle of Monsters</Title>
-
-            <MonstersList monsters={monsters} />
-
-            <BattleSection>
-                <MonsterBattleCard title={selectedMonster?.name || "Player"}></MonsterBattleCard>
-                <StartBattleButton data-testid="start-battle-button"  disabled={selectedMonster === null} onClick={handleStartBattleClick}>Start Battle</StartBattleButton>
-                <MonsterBattleCard title="Computer"></MonsterBattleCard>
-            </BattleSection>
-        </PageContainer>
-    )
-}
-
-export { BattleOfMonsters }
+export { BattleOfMonsters };
